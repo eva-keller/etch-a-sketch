@@ -2,8 +2,6 @@ const buttonClear = document.querySelector('.clearButton')
 const buttonNew = document.querySelector('.newGame')
 const gridContainer = document.querySelector('.gridContainer')
 
-let color = 'black'
-
 createGrid(20);
 
 function createGrid(gridNumber){
@@ -41,4 +39,3 @@ function makeNew(){
 //eventlisteners
 buttonClear.addEventListener('click', erase)
 buttonNew.addEventListener('click', makeNew)
-buttonColor.forEach(button => button.addEventListener('click', changeColorVar))
