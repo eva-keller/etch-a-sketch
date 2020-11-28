@@ -1,53 +1,44 @@
-const grid = document.querySelector('.grid');
-let gridValue = document.querySelector('.grid-size');
-let gridSize = document.querySelector('input');
-const resetBtn = document.querySelector('.reset');
-const applyGridSize = document.querySelector('.apply');
-let squareSize = 8;
+const buttonClear = document.querySelector('.clearButton')
+const buttonNew = document.querySelector('.newGame')
+const gridContainer = document.querySelector('.gridContainer')
 
-createGrid(squareSize);
+let color = 'black'
 
-// Create Squared Divs
-function createDiv(size) {
-  const div = document.createElement('div');
-  div.classList.add('box');
-  div.style.width = `${size}px`;
-  div.style.height = `${size}px`;
+createGrid(20);
 
-  return div;
-}
-
-// Creat The Grid and append it to grid
-function createGrid(gridSize) {
-  for (let i = 0; i < gridSize; i++) {
-    for (let j = 0; j < gridSize; j++) {
-      grid.appendChild(createDiv(grid.clientWidth / gridSize));
+function createGrid(gridNumber){
+    let gridSquare = gridNumber * gridNumber;
+    gridContainer.style.gridTemplateColumns = `repeat(${gridNumber}, 1fr)`
+    gridContainer.style.gridTemplateRows = `repeat(${gridNumber}, 1fr)`
+    for(i = 1; i <= gridSquare; i++ ){
+        let grids = document.createElement('div')
+        gridContainer.insertAdjacentElement('afterbegin', grids)
     }
-  }
+    //get all divs, iterate through each
+    let wholeGrid = gridContainer.querySelectorAll('div')
+    wholeGrid.forEach(oneGrid => oneGrid.addEventListener('mouseover', colorGrid))
 }
 
-function reset() {
-  while (grid.firstChild) {
-    grid.removeChild(grid.lastChild);
-  }
-  createGrid(squareSize);
+
+function colorGrid(){
+      this.style.backgroundColor = 'green'
+    }
+
+function erase(){
+    let wholeGrid = gridContainer.querySelectorAll('div')
+    wholeGrid.forEach(oneGrid => oneGrid.style.backgroundColor = '#fff')
+};
+
+function makeNew(){
+    erase()
+    let gridNumber = parseInt(prompt('Gimme a grid size:'))
+    while(isNaN(gridNumber) || gridNumber < 0 || gridNumber > 100){
+        gridNumber = parseInt(prompt('Pick a number between 1 and 100'))
+    }
+    createGrid(gridNumber)
 }
 
-// Used event delegation to target children of the grid
-grid.addEventListener('mouseover', function (e) {
-  // Add the "active" class to only divs with a "box" class
-  if (e.target.matches('.box')) {
-    e.target.classList.add('active');
-  }
-});
-
-gridSize.addEventListener('input', function (e) {
-  squareSize = e.target.value;
-  gridValue.textContent = `${squareSize}x${squareSize}`;
-});
-
-applyGridSize.addEventListener('click', function () {
-  reset();
-});
-
-resetBtn.addEventListener('click', reset);
+//eventlisteners
+buttonClear.addEventListener('click', erase)
+buttonNew.addEventListener('click', makeNew)
+buttonColor.forEach(button => button.addEventListener('click', changeColorVar))
